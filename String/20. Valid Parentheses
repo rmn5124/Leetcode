@@ -1,0 +1,61 @@
+//https://leetcode.com/problems/valid-parentheses/
+
+class Solution {
+public:
+    bool isValid(string s) {
+       
+    stack<char> st;
+    char x;
+ 
+    // Traversing the Expression
+    for (int i = 0; i < s.length(); i++)
+    {
+        if (s[i] == '(' || s[i] == '['
+            || s[i] == '{')
+        {
+            // Push the element in the stack
+            st.push(s[i]);
+            continue;
+        }
+ 
+        // IF current current character is not opening
+        // bracket, then it must be closing. So stack
+        // cannot be empty at this point.
+        if (st.empty())
+            return false;
+ 
+        switch (s[i]) {
+        case ')':
+             
+            // Store the top element in a
+            x = st.top();
+            st.pop();
+            if (x == '{' || x == '[')
+                return false;
+            break;
+ 
+        case '}':
+ 
+            // Store the top element in b
+            x = st.top();
+            st.pop();
+            if (x == '(' || x == '[')
+                return false;
+            break;
+ 
+        case ']':
+ 
+            // Store the top element in c
+            x = st.top();
+            st.pop();
+            if (x == '(' || x == '{')
+                return false;
+            break;
+        }
+    }
+ 
+    // Check Empty Stack
+    if (st.empty()) return true;
+        else return false;
+    }
+};
