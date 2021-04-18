@@ -1,0 +1,27 @@
+//https://leetcode.com/problems/binary-tree-maximum-path-sum/
+
+class Solution {
+    int maxPathSum_util(TreeNode *root,int &result)
+    {
+        if(!root)
+            return 0;
+        
+        int left = maxPathSum_util(root->left,result);
+        int right = maxPathSum_util(root->right,result);
+        
+        int temp = max(max(left,right)+root->val, root->val);
+        int ans = max(temp,left+right+root->val);
+        result = max(ans,result);
+        
+        return temp;
+    }
+public:
+    int maxPathSum(TreeNode* root) {
+        // ios_base::sync_with_stdio(false);
+        // cin.tie(NULL);
+        
+        int result = INT_MIN;
+        maxPathSum_util(root,result);
+        return result; 
+    }
+};
