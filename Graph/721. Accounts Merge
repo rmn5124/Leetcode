@@ -1,0 +1,79 @@
+//https://leetcode.com/problems/accounts-merge/
+
+
+class Solution {
+public:
+	int par[1001];
+
+	int find(int i)
+	{
+		if(par[i] == i)
+			return i;
+		return par[i] = find(par[i]);
+	}
+	void union_(int a,int b)
+	{
+		a = find(a);
+		b = find(b);
+		par[b] = a;
+	}
+
+    vector<vector<string>> accountsMerge(vector<vector<string>>& accounts) {
+        int n = accounts.size();
+    	for(int i=0;i<n;i++) 
+            par[i] = i;
+    	map<string,vector<int>> mp;
+
+    	for(int i=0;i<n;i++)
+    	{
+    		for(int j = 1;j<accounts[i].size();j++)
+    		{
+    			mp[accounts[i][j]].push_back(i);
+    		}
+    	}
+
+
+
+    	for(auto it:mp)
+    	{
+
+    		for(int i = 1;i<it.second.size();i++)
+    		{
+    			union_(it.second[i-1],it.second[i]);
+    		}
+    	}
+
+
+
+    	map<int,vector<int>> a;
+
+    	for(int i=0;i<n;i++)
+    	{
+    		a[find(i)].push_back(i);
+    	}
+
+
+    	vector<vector<string>> ans;
+
+    	for(auto x:a)
+    	{
+    		vector<string> tmp;
+    		tmp.push_back(accounts[x.first][0]);
+    		set<string>s;
+    		for(int i=1;i<accounts[x.first].size();i++)
+    			s.insert(accounts[x.first][i]);
+
+    		for(auto k:x.second)
+    		{
+    			for(int i=1;i<accounts[k].size();i++)
+    				s.insert(accounts[k][i]);
+    		}
+    		for(auto it:s)
+    			tmp.push_back(it);
+  			ans.push_back(tmp);
+    	}
+    	return ans;
+
+        
+    }
+};
